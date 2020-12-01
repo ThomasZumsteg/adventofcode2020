@@ -2,12 +2,19 @@
 
 from get_input import get_input, line_parser
 
+import itertools
+
 
 def part1(lines):
-    raise NotImplementedError
+    for a, b in itertools.combinations(lines, 2):
+        if a + b == 2020:
+            return a * b
 
 
 def part2(lines):
+    for a, b, c in itertools.combinations(lines, 3):
+        if a + b + c == 2020:
+            return a * b * c
     raise NotImplementedError
 
 
