@@ -9,6 +9,7 @@ def part1(lines):
     for a, b in itertools.combinations(lines, 2):
         if a + b == 2020:
             return a * b
+    raise NotImplementedError
 
 
 def part2(lines):
