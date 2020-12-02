@@ -1,0 +1,16 @@
+[package]
+name = "adventofcode2020"
+version = "2020.12.1"
+authors = ["Thomas Zumsteg <thomas.zumsteg@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+itertools="0.9.0"
+
+[lib]
+name = "common"
+path = "lib.rs"
+
+[[bin]]
+name = "day01"
+path = "day01.rs"
