@@ -1,4 +1,4 @@
-"""Solution do day 1 of Advent of Code"""
+"""Solution to day 1 of Advent of Code"""
 
 from get_input import get_input, line_parser
 
