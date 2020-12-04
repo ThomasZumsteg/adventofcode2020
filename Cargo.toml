@@ -1,6 +1,6 @@
 [package]
 name = "adventofcode2020"
-version = "2020.12.1"
+version = "2020.12.3"
 authors = ["Thomas Zumsteg <thomas.zumsteg@gmail.com>"]
 edition = "2018"
 
@@ -19,3 +19,7 @@ path = "day01.rs"
 [[bin]]
 name = "day02"
 path = "day02.rs"
+
+[[bin]]
+name = "day03"
+path = "day03.rs"
