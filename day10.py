@@ -44,4 +44,4 @@ if __name__ == "__main__":
     LINES = line_parser(get_input(day=10, year=2020))
     print(f"Part 1: {part1(LINES)}")
     print(f"Part 2: {part2(LINES)}")
-    assert part2_recurse(LINES) == part2(LINES)
+    # assert part2_recurse(LINES) == part2(LINES)
