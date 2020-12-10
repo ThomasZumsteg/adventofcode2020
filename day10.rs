@@ -1,3 +1,5 @@
+#![feature(test)]
+
 use common::get_input;
 use std::collections::{HashMap, HashSet};
 use std::iter::FromIterator;
@@ -69,4 +71,25 @@ fn main() {
     let input = parse(get_input(10, 2020));
     println!("Part 1: {}", part1(&input));
     println!("Part 2: {}", part2(&input));
+}
+
+
+#[cfg(test)]
+mod tests {
+    extern crate test;
+
+    use super::*;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_iter(b: &mut Bencher) {
+        let input = parse(get_input(10, 2020));
+        b.iter(|| part2_iter(&input));
+    }
+
+    #[bench]
+    fn bench_recurse(b: &mut Bencher) {
+        let input = parse(get_input(10, 2020));
+        b.iter(|| part2_recurse(&input));
+    }
 }
