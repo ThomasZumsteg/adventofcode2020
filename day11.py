@@ -1,15 +1,21 @@
 """Solution to day 11 of Advent of Code"""
 
 from get_input import get_input
-import itertools
 
 
-def surround(grid, location, seek):
+def surround(location, seek):
     total = 0
     for diff in (1+1j, 1+0j, 1-1j, 0+1j, 0-1j, -1+1j, -1+0j, -1-1j):
         if seek(location, diff):
             total += 1
     return total
+
+
+def update(grid, rules):
+    new = grid.copy()
+    for location in grid.keys():
+        new[location] = rules(location)
+    return new
 
 
 def part1(seating):
@@ -20,16 +26,15 @@ def part1(seating):
         def seek(pos, diff):
             return last.get(pos + diff) == '#'
 
-        seating = {}
-        for location, seat in last.items():
-            if seat == '.':
-                seating[location] = '.'
-            elif seat == "L" and surround(last, location, seek) == 0:
-                seating[location] = '#'
-            elif seat == '#' and surround(last, location, seek) >= 4:
-                seating[location] = 'L'
-            else:
-                seating[location] = seat
+        def rules(location):
+            seat = last.get(location)
+            if seat == "L" and surround(location, seek) == 0:
+                return '#'
+            elif seat == '#' and surround(location, seek) >= 4:
+                return 'L'
+            return seat
+
+        seating = update(last, rules)
         assert len(last) == len(seating)
     return sum(1 for value in seating.values() if value == '#')
 
@@ -40,23 +45,22 @@ def part2(seating):
         last = seating
 
         def seek(pos, diff):
-            for count in itertools.count(1):
-                seat = last.get(pos + count * diff)
-                if seat == '#':
-                    return True
-                elif seat == 'L' or seat is None:
-                    return False
+            seat = last.get(pos+diff)
+            if seat == '#':
+                return True
+            elif seat == 'L' or seat is None:
+                return False
+            return seek(pos+diff, diff)
 
-        seating = {}
-        for location, seat in last.items():
-            if seat == '.':
-                seating[location] = '.'
-            elif seat == "L" and surround(last, location, seek) == 0:
-                seating[location] = '#'
-            elif seat == '#' and surround(last, location, seek) >= 5:
-                seating[location] = 'L'
-            else:
-                seating[location] = seat
+        def rules(location):
+            seat = last.get(location)
+            if seat == "L" and surround(location, seek) == 0:
+                return '#'
+            elif seat == '#' and surround(location, seek) >= 5:
+                return 'L'
+            return seat
+
+        seating = update(last, rules)
         assert len(last) == len(seating)
     return sum(1 for value in seating.values() if value == '#')
 
