@@ -19,17 +19,6 @@ def turn(direction):
     return turn_func
 
 
-def forward(heading, position, value):
-    return heading, position + heading * value
-
-
-def swap(function):
-    def swapped(heading, position, value):
-        position, heading = function(position, heading, value)
-        return heading, position
-    return swapped
-
-
 RULES = {
     'N': move(0+1j),
     'S': move(0-1j),
@@ -37,7 +26,7 @@ RULES = {
     'W': move(-1+0j),
     'R': turn(lambda h: complex(h.imag, -h.real)),
     'L': turn(lambda h: complex(-h.imag, h.real)),
-    'F': forward,
+    'F': lambda h, p, v: (h, p + h * v),
 }
 
 
@@ -48,6 +37,13 @@ def part1(lines):
     for (order, value) in lines:
         heading, position = rules[order](heading, position, value)
     return int(abs(position.real) + abs(position.imag))
+
+
+def swap(function):
+    def swapped(heading, position, value):
+        position, heading = function(position, heading, value)
+        return heading, position
+    return swapped
 
 
 def part2(lines):
