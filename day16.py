@@ -52,7 +52,6 @@ def part2(lines):
                 break
             elif len(diff) == 0:
                 raise NotImplementedError
-    breakpoint()
     total = 1
     for col, name in names.items():
         if not name.startswith('departure'):
