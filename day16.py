@@ -1,6 +1,7 @@
 """Solution to day 16 of Advent of Code"""
 
 from get_input import get_input
+import itertools
 import re
 
 
@@ -11,32 +12,23 @@ def fits(rule, value):
 
 
 def part1(lines):
-    rules = lines['rules'].copy()
     invalid = 0
-    invalid_ticket = set()
-    for ticket in lines['nearby_tickets']:
-        for number in ticket:
-            matches = [name for name, rule in rules.items()
-                       if fits(rule, number)]
-            if len(matches) == 0:
-                invalid_ticket.add(tuple(ticket))
-                invalid += number
+    for number in itertools.chain(*lines['nearby tickets']):
+        if all(not fits(rule, number) for rule in lines['rules'].values()):
+            invalid += number
     return invalid
 
 
 def part2(lines):
     rules = lines['rules'].copy()
-    valid_tickets = []
-    for ticket in lines['nearby_tickets']:
-        if all(any(fits(rule, number) for rule in rules.values())
-               for number in ticket):
-            valid_tickets.append(ticket)
-    fields = {}
-    for col in range(len(lines['your_ticket'])):
-        fields[col] = set(lines['rules'].keys())
-        for ticket in valid_tickets:
+    fields = {n: set(lines['rules']) for n in range(len(lines['rules']))}
+    for ticket in lines['nearby tickets']:
+        if not all(any(fits(rule, number) for rule in rules.values())
+                   for number in ticket):
+            continue
+        for col, num in enumerate(ticket):
             for name, rule in rules.items():
-                if not fits(rule, ticket[col]):
+                if not fits(rule, num):
                     fields[col].remove(name)
     solved = set()
     names = {}
@@ -56,42 +48,34 @@ def part2(lines):
     for col, name in names.items():
         if not name.startswith('departure'):
             continue
-        total *= lines['your_ticket'][col]
+        total *= lines['your ticket'][col]
     return total
 
 
 def parse(text):
     output = {
-        'your_ticket': [],
+        'your ticket': [],
         'rules': {},
-        'nearby_tickets': []
+        'nearby tickets': []
     }
-    state = "RULES"
+    state = 'rules'
     pointer = output['rules']
     for line in text.splitlines():
         line = line.strip()
-        if state == "RULES":
-            if line == "":
-                state = "YOUR_TICKET"
-                continue
+        if line == '':
+            state = None
+        elif state is None:
+            state = line.strip(':')
+            pointer = output[state]
+        elif state == 'rules':
             m = re.match(r'(.+): (\d+)-(\d+) or (\d+)-(\d+)', line)
             pointer[m.group(1)] = (
                 (int(m.group(2)), int(m.group(3))),
                 (int(m.group(4)), int(m.group(5))),
             )
-        elif state == 'YOUR_TICKET':
-            if line == "your ticket:":
-                pointer = output['your_ticket']
-                continue
-            elif line == "":
-                state = "NEARBY_TICKETS"
-                continue
-            else:
-                pointer.extend(int(n) for n in line.split(','))
-        elif state == "NEARBY_TICKETS":
-            if line == "nearby tickets:":
-                pointer = output["nearby_tickets"]
-                continue
+        elif state == 'your ticket':
+            pointer.extend(int(n) for n in line.split(','))
+        elif state == 'nearby tickets':
             pointer.append([int(n) for n in line.split(',')])
     return output
 
@@ -101,13 +85,13 @@ row: 6-11 or 33-44
 seat: 13-40 or 45-50
 
 your ticket:
-    7,1,14
+7,1,14
 
-    nearby tickets:
-    7,3,47
-    40,4,50
-    55,2,20
-    38,6,12
+nearby tickets:
+7,3,47
+40,4,50
+55,2,20
+38,6,12
 """
 
 
