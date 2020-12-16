@@ -1,6 +1,6 @@
 """Solution to day 15 of Advent of Code"""
 
-from get_input import get_input, line_parser
+from get_input import get_input
 from itertools import count, islice
 
 
