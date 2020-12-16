@@ -59,8 +59,6 @@ def part2(lines):
         total *= lines['your_ticket'][col]
     return total
 
-    raise NotImplementedError
-
 
 def parse(text):
     output = {
