@@ -1,6 +1,7 @@
 """Solution to day 18 of Advent of Code"""
 
 from get_input import get_input, line_parser
+from operator import add, mul
 import re
 
 
@@ -15,20 +16,20 @@ def find_match_index(symbols):
             return j
 
 
-def evaluate(symbols):
-    if len(symbols) == 1 and isinstance(symbols[0], int):
-        return symbols[0]
-    elif symbols[0] == ')':
-        j = find_match_index(symbols)
-        lnum = evaluate(symbols[1:j])
-        if len(symbols) <= j+1:
-            return lnum
-        op = symbols[j+1]
-        rnum = evaluate(symbols[j+2:])
-    else:
-        lnum, op = symbols[:2]
-        rnum = evaluate(symbols[2:])
-    return eval(f"{int(lnum)}{op}{int(rnum)}")
+# def evaluate(symbols):
+#     if len(symbols) == 1 and isinstance(symbols[0], int):
+#         return symbols[0]
+#     elif symbols[0] == ')':
+#         j = find_match_index(symbols)
+#         lnum = evaluate(symbols[1:j])
+#         if len(symbols) <= j+1:
+#             return lnum
+#         op = symbols[j+1]
+#         rnum = evaluate(symbols[j+2:])
+#     else:
+#         lnum, op = symbols[:2]
+#         rnum = evaluate(symbols[2:])
+#     return eval(f"{int(lnum)}{op}{int(rnum)}")
 
 
 def find_match_index_v2(symbols):
@@ -63,10 +64,33 @@ def evaluate_v2(symbols):
     return evaluate_v2(symbols)
 
 
+def evaluate(symbols):
+    operators = []
+    output = []
+    for symbol in symbols:
+        if isinstance(symbol, int):
+            output.append(symbol)
+        elif symbol == '+':
+            operators.append(add)
+        elif symbol == '*':
+            operators.append(mul)
+        elif symbol == '(':
+            operators.append('(')
+        elif symbol == ')':
+            symbol = operators.pop()
+            while symbol != '(':
+                output.append(symbol)
+                symbol = operators.pop()
+    breakpoint()
+    while True:
+        operator = operators.pop()
+        opera
+
+
 def part1(lines):
     total = 0
     for line in lines:
-        val = evaluate(line[::-1])
+        val = evaluate(line)
         total += val
     return total
 
