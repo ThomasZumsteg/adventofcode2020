@@ -93,7 +93,6 @@ def part1(images):
             else:
                 current = complex(0, current.imag+1)
             board[current] = get_possible(board, current, images)
-    breakpoint()
     return board[0+0j][0].id * board[complex(0, size-1)][0].id *\
         board[complex(size-1, 0)][0].id *\
         board[complex(size-1, size-1)][0].id
