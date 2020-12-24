@@ -83,14 +83,14 @@ def part2(lines, rounds=10_000_000, num_nodes=1_000_000):
     return index.next.value * index.next.next.value
 
 
-def parse(line):
-    raise NotImplementedError
+def parse(text):
+    return tuple(int(c) for c in text)
 
 
 if __name__ == "__main__":
-    assert part1(tuple(int(c) for c in '389125467'), rounds=10) == 92658374
-    assert part1(tuple(int(c) for c in '389125467'), rounds=100) == 67384529
-    assert part2(tuple(int(c) for c in '389125467')) == 149245887792
-    LINES = tuple(int(c) for c in get_input(day=23, year=2020).strip())
+    assert part1(parse('389125467'), rounds=10) == 92658374
+    assert part1(parse('389125467'), rounds=100) == 67384529
+    assert part2(parse('389125467')) == 149245887792
+    LINES = parse(get_input(day=23, year=2020).strip())
     print(f"Part 1: {part1(LINES)}")
     print(f"Part 2: {part2(LINES)}")
