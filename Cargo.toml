@@ -7,6 +7,7 @@ edition = "2018"
 [dependencies]
 itertools="0.9.0"
 regex="1.4.2"
+num="0.3.1"
 
 [lib]
 name = "common"
@@ -59,3 +60,7 @@ path = "day11.rs"
 [[bin]]
 name = "day12"
 path = "day12.rs"
+
+[[bin]]
+name = "day13"
+path = "day13.rs"
