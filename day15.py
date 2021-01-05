@@ -37,7 +37,6 @@ if __name__ == "__main__":
     assert part1((1, 2, 3)) == 27
     assert part1((3, 1, 2)) == 1836
     assert part1((3, 2, 1)) == 438
-    assert part1((3, 2, 1)) == 438
     LINES = parse(get_input(day=15, year=2020))
     print(f"Part 1: {part1(LINES)}")
     print(f"Part 2: {part2(LINES)}")
